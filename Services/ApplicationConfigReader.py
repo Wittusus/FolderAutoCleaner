@@ -9,24 +9,27 @@ class ApplicationConfigReader:
 
         except:
             return FileNotFoundError
-        option = "extensions"
-        result = list(filter(lambda x: x[0] == option, file))[0][1].strip()
-        result= result.split(',')
-        result=[i.strip() for i in result]
+
+
+        result = list(filter(lambda x: x[0] == "extensions", file))[0][1].strip()
+        result = result.split(',')
+        result = [i.strip() for i in result]
+
         return result
+
+    def readPath(self, arr_nr):
+
+        try:
+            file = [i.split(' ') for i in open(self.configFilePath)]
+
+        except:
+            return FileNotFoundError
+
+        result = file[arr_nr][1].strip()
+        return result
+
     def readSource(self):
-        try:
-            file = [i.split(' ') for i in open(self.configFilePath)]
+        return self.readPath(1)
 
-        except:
-            return FileNotFoundError
-        result = file[1][1].strip()
-        return result
     def readDestination(self):
-        try:
-            file = [i.split(' ') for i in open(self.configFilePath)]
-
-        except:
-            return FileNotFoundError
-        result = file[2][1].strip()
-        return result
+        return self.readPath(2)
