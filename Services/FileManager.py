@@ -20,8 +20,17 @@ class FileManager:
         countfiles = [ i for i in files if not i.isupper()]
         self.filesCount = len(countfiles)
 
-        extentions = [os.path.splitext(f)[1][1:] for f in files]
-        return extentions
+        extensions = [os.path.splitext(f)[1][1:] for f in files]
+        return extensions
+
+    def makeFolder(self, extension):
+        try:
+            os.mkdir(self.dst + f"/{extension}")
+            self.logger.log_message("Add folder: " + self.dst + f"/{extension}")
+        except:
+            self.logger.log_message("Error adding folder: " + self.dst + f"/{extension}", "error")
+            pass
+
 
 
     def makeFolder(self, extension):
@@ -47,7 +56,7 @@ class FileManager:
             self.makeFolder(i)
             folders.append(self.dst + f"/{i}")
 
-        return set(folders)
+        return folders
 
 
     def moveFile(self, file, folder):
@@ -68,8 +77,6 @@ class FileManager:
         fileCounter = self.filesCount
         movedCounter = 1
 
-
-
         for file in files:
             for folder in folders:
                 if [os.path.splitext(file)[1][1:].upper()][0] == folder.split('/')[-1]:
@@ -83,7 +90,3 @@ class FileManager:
 
     def displayProgressBar(self, movedCounter):
         print(f"Files moved: {movedCounter}/{self.filesCount}")
-
-
-
-

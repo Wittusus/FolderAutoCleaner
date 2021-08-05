@@ -1,2 +1,2 @@
-src_folder: C:/Users/Ldvs/Downloads
-dst_folder: c:/Users/Ldvs/Downloads
+src_folder: C:/Users/LDVS/Downloads
+dst_folder: C:/Users/LDVS/Downloads
