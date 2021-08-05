@@ -8,7 +8,7 @@ class FileManager:
     def __init__(self, src: str, dst: str):
         self.src = src
         self.dst = dst
-        self.extenstions = []
+        self.extentions = []
         self.filesCount = 0
         self.logger = Logger("Logs/FileManagerLogs.log")
 
@@ -25,7 +25,7 @@ class FileManager:
         extentions = self.getExtentions()
         extentions = list(dict.fromkeys([str(i) for i in extentions if len(i)>=1]))
         extentions = [ i.upper()  for i in extentions  ]
-        self.extenstions = extentions
+        self.extentions = extentions
 
         folders = []
 
