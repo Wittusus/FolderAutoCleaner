@@ -1,2 +1,4 @@
+from Program import Program
+
 if __name__ == '__main__':
-    print("Hello World!")
+    program = Program()
