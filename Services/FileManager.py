@@ -8,7 +8,7 @@ class FileManager:
     def __init__(self, src: str, dst: str):
         self.src = src
         self.dst = dst
-        self.extentions = []
+        self.extensions = []
         self.filesCount = 0
         self.logger = Logger("Logs/FileManagerLogs.log")
 
@@ -18,34 +18,30 @@ class FileManager:
         countfiles = [ i for i in files if not i.isupper()]
         self.filesCount = len(countfiles)
 
-        extentions = [os.path.splitext(f)[1][1:] for f in files]
-        return extentions
+        extensions = [os.path.splitext(f)[1][1:] for f in files]
+        return extensions
+
+    def makeFolder(self, extension):
+        try:
+            os.mkdir(self.dst + f"/{extension}")
+            self.logger.log_message("Add folder: " + self.dst + f"/{extension}")
+        except:
+            self.logger.log_message("Error adding folder: " + self.dst + f"/{extension}", "error")
+            pass
 
     def makeFolders(self):
-        extentions = self.getExtentions()
-        extentions = list(dict.fromkeys([str(i) for i in extentions if len(i)>=1]))
-        extentions = [ i.upper()  for i in extentions  ]
-        self.extentions = extentions
+        extensions = self.getExtentions()
+        extensions = list(dict.fromkeys([str(i) for i in extensions if len(i) >= 1]))
+        extensions = [i.upper() for i in extensions]
+        self.extensions = extensions
 
         folders = []
 
-        try:
-            folders.append(self.dst + "/FOLDERS")
-            os.mkdir(self.dst+"/FOLDERS")
-            self.logger.log_message("Add folder: "+ self.dst+"/FOLDERS")
-        except:
-            self.logger.log_message("error", "Error adding folder: " + self.dst + "/FOLDERS")
-            pass
+        self.makeFolder("FOLDERS")
 
-        for i in extentions:
-            try:
-                os.mkdir(self.dst+f"/{i}")
-                self.logger.log_message("Add folder: " + self.dst+f"/{i}")
-            except:
-                self.logger.log_message("error", "Error adding folder: " + self.dst+f"/{i}")
-                pass
+        for i in extensions:
+            self.makeFolder(i)
             folders.append(self.dst + f"/{i}")
-
 
         return set(folders)
 
@@ -54,8 +50,6 @@ class FileManager:
         folders = self.makeFolders()
         fileCounter = self.filesCount
         movedCounter = 1
-
-
 
         for file in files:
             for folder in folders:
@@ -87,7 +81,3 @@ class FileManager:
 
     def displayProgressBar(self, movedCounter):
         print(f"Files moved: {movedCounter}/{self.filesCount}")
-
-
-
-
