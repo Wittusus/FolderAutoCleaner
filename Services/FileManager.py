@@ -2,6 +2,7 @@ from os import listdir
 import shutil
 import os
 
+from Services.Logger import Logger
 
 class FileManager:
     def __init__(self, src: str, dst: str):
@@ -9,6 +10,7 @@ class FileManager:
         self.dst = dst
         self.extenstions = []
         self.filesCount = 0
+        self.logger = Logger("Logs/FileManagerLogs.log")
 
     def getExtentions(self):
         files = [f for f in listdir(self.src)]
@@ -30,13 +32,17 @@ class FileManager:
         try:
             folders.append(self.dst + "/FOLDERS")
             os.mkdir(self.dst+"/FOLDERS")
+            self.logger.log_message("Add folder: "+ self.dst+"/FOLDERS")
         except:
+            self.logger.log_message("error", "Error adding folder: " + self.dst + "/FOLDERS")
             pass
 
         for i in extentions:
             try:
                 os.mkdir(self.dst+f"/{i}")
+                self.logger.log_message("Add folder: " + self.dst+f"/{i}")
             except:
+                self.logger.log_message("error", "Error adding folder: " + self.dst+f"/{i}")
                 pass
             folders.append(self.dst + f"/{i}")
 
@@ -58,10 +64,12 @@ class FileManager:
 
                         self.displayProgressBar(movedCounter)
                         shutil.move(self.src+"/"+file, folder)
+                        self.logger.log_message("Moved "+self.src+"/"+file+" to "+folder)
                         fileCounter-=1
                         movedCounter+=1
 
                     except:
+                        self.logger.log_message("error ","Couldn't add file"+self.src+"/"+file+" to "+folder)
                         pass
 
         files = listdir(self.src)
@@ -73,11 +81,13 @@ class FileManager:
                     fileCounter -= 1
                     movedCounter+=1
                 except:
+                    self.logger.log_message("error ", self.src + "/" + file+ " to " + self.dst+"/FOLDERS")
                     pass
 
 
     def displayProgressBar(self, movedCounter):
         print(f"Files moved: {movedCounter}/{self.filesCount}")
+
 
 
 
