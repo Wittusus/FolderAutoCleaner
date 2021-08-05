@@ -10,7 +10,7 @@ class Program:
     def run(self):
         try:
             print("App started")
-            print(self.fileManagerService.moveFiles())
+            self.fileManagerService.moveFiles()
 
 
         except:
