@@ -1,4 +1,5 @@
 from os import listdir
+import shutil
 import os
 
 
@@ -35,7 +36,15 @@ class FileManager:
 
         return set(folders)
 
-    
+    def moveFiles(self):
+        files = dict()
+        folders = self.makeFolders()
 
-
-
+        for file in listdir(self.src):
+            for folder in folders:
+                if [os.path.splitext(file)[1][1:].upper()][0] == folder.split('/')[-1]:
+                    print(os.path.splitext(file)[0], folder)
+                    try:
+                        shutil.copy(self.src+"/"+file, folder)
+                    except:
+                        pass
