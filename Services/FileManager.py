@@ -1,6 +1,7 @@
 from os import listdir
 import os
 
+
 class FileManager:
     def __init__(self, src: str, dst: str):
         self.src = src
@@ -13,14 +14,14 @@ class FileManager:
 
     def makeFolders(self):
         extentions = self.getExtentions()
-        isFolder = min( [len(i) for i in extentions] ) == 0
-
         extentions = list(dict.fromkeys([str(i) for i in extentions if len(i)>=1]))
         extentions = [ i.upper()  for i in extentions  ]
 
+        folders = []
 
         try:
-            if isFolder: os.mkdir(self.dst+"/FOLDERS")
+            folders.append(self.dst + "/FOLDERS")
+            os.mkdir(self.dst+"/FOLDERS")
         except:
             pass
 
@@ -29,6 +30,12 @@ class FileManager:
                 os.mkdir(self.dst+f"/{i}")
             except:
                 pass
+            folders.append(self.dst + f"/{i}")
 
-    def moveFiles(self):
-        pass
+
+        return set(folders)
+
+    
+
+
+

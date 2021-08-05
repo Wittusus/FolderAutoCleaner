@@ -10,7 +10,7 @@ class Program:
     def run(self):
         try:
             print("App started")
-            self.fileManagerService.makeFolders()
+            print(self.fileManagerService.makeFolders())
 
 
         except:
