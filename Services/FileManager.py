@@ -6,9 +6,11 @@ from Services.Logger import Logger
 
 class FileManager:
     def __init__(self, src: str, dst: str):
+        self.movedCounter = 1
+        self.fileCounter = 0
         self.src = src
         self.dst = dst
-        self.extenstions = []
+        self.extensions = []
         self.filesCount = 0
         self.logger = Logger("Logs/FileManagerLogs.log")
 
@@ -21,33 +23,44 @@ class FileManager:
         extentions = [os.path.splitext(f)[1][1:] for f in files]
         return extentions
 
+
+    def makeFolder(self, extension):
+        try:
+            os.mkdir(self.dst + f"/{extension}")
+            self.logger.log_message("Add folder: " + self.dst + f"/{extension}")
+        except:
+            self.logger.log_message("Error adding folder: " + self.dst + f"/{extension}", "error")
+            pass
+
+
     def makeFolders(self):
-        extentions = self.getExtentions()
-        extentions = list(dict.fromkeys([str(i) for i in extentions if len(i)>=1]))
-        extentions = [ i.upper()  for i in extentions  ]
-        self.extenstions = extentions
+        extensions = self.getExtentions()
+        extensions = list(dict.fromkeys([str(i) for i in extensions if len(i) >= 1]))
+        extensions = [i.upper() for i in extensions]
+        self.extensions = extensions
 
         folders = []
 
-        try:
-            folders.append(self.dst + "/FOLDERS")
-            os.mkdir(self.dst+"/FOLDERS")
-            self.logger.log_message("Add folder: "+ self.dst+"/FOLDERS")
-        except:
-            self.logger.log_message("error", "Error adding folder: " + self.dst + "/FOLDERS")
-            pass
+        self.makeFolder("FOLDERS")
 
-        for i in extentions:
-            try:
-                os.mkdir(self.dst+f"/{i}")
-                self.logger.log_message("Add folder: " + self.dst+f"/{i}")
-            except:
-                self.logger.log_message("error", "Error adding folder: " + self.dst+f"/{i}")
-                pass
+        for i in extensions:
+            self.makeFolder(i)
             folders.append(self.dst + f"/{i}")
 
-
         return set(folders)
+
+
+    def moveFile(self, file, folder):
+        try:
+
+            self.displayProgressBar(self.movedCounter)
+            shutil.move(self.src + "/" + file, folder)
+            self.logger.log_message("Moved " + self.src + "/" + file + " to " + folder)
+            self.fileCounter -= 1
+            self.movedCounter += 1
+        except:
+            self.logger.log_message("error ", "Couldn't add file" + self.src + "/" + file + " to " + folder)
+            pass
 
     def moveFiles(self):
         files = listdir(self.src)
@@ -60,29 +73,12 @@ class FileManager:
         for file in files:
             for folder in folders:
                 if [os.path.splitext(file)[1][1:].upper()][0] == folder.split('/')[-1]:
-                    try:
-
-                        self.displayProgressBar(movedCounter)
-                        shutil.move(self.src+"/"+file, folder)
-                        self.logger.log_message("Moved "+self.src+"/"+file+" to "+folder)
-                        fileCounter-=1
-                        movedCounter+=1
-
-                    except:
-                        self.logger.log_message("error ","Couldn't add file"+self.src+"/"+file+" to "+folder)
-                        pass
+                    self.moveFile(file, folder)
 
         files = listdir(self.src)
         for file in files:
             if (not file.isupper()):
-                try:
-                    self.displayProgressBar(movedCounter)
-                    shutil.move(self.src + "/" + file, self.dst+"/FOLDERS")
-                    fileCounter -= 1
-                    movedCounter+=1
-                except:
-                    self.logger.log_message("error ", self.src + "/" + file+ " to " + self.dst+"/FOLDERS")
-                    pass
+                self.moveFile(file, self.dst+"/FOLDERS")
 
 
     def displayProgressBar(self, movedCounter):

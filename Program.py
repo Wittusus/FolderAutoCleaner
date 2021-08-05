@@ -11,7 +11,5 @@ class Program:
         try:
             print("App started")
             self.fileManagerService.moveFiles()
-
-
         except:
             raise Exception("App could not be started")
