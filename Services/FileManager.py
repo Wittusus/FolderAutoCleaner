@@ -7,6 +7,7 @@ class FileManager:
     def __init__(self, src: str, dst: str):
         self.src = src
         self.dst = dst
+        self.extenstions = []
 
     def getExtentions(self):
         files = [f for f in listdir(self.src)]
@@ -17,6 +18,7 @@ class FileManager:
         extentions = self.getExtentions()
         extentions = list(dict.fromkeys([str(i) for i in extentions if len(i)>=1]))
         extentions = [ i.upper()  for i in extentions  ]
+        self.extenstions = extentions
 
         folders = []
 
@@ -37,14 +39,26 @@ class FileManager:
         return set(folders)
 
     def moveFiles(self):
-        files = dict()
+        files = listdir(self.src)
         folders = self.makeFolders()
 
-        for file in listdir(self.src):
+
+
+        for file in files:
             for folder in folders:
                 if [os.path.splitext(file)[1][1:].upper()][0] == folder.split('/')[-1]:
-                    print(os.path.splitext(file)[0], folder)
                     try:
-                        shutil.copy(self.src+"/"+file, folder)
+                        shutil.move(self.src+"/"+file, folder)
                     except:
                         pass
+
+        files = listdir(self.src)
+        for file in files:
+            if (not file.isupper()):
+                try:
+                    shutil.move(self.src + "/" + file, self.dst+"/FOLDERS")
+                except:
+                    pass
+
+
+
