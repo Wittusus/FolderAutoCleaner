@@ -1,8 +1,11 @@
+
+
 class ApplicationConfigReader:
 
     def __init__(self, configFilePath: str):
         self.configFilePath = configFilePath
 
+    '''
     def readExtensions(self):
         try:
             file = [i.split(':') for i in open(self.configFilePath)]
@@ -16,6 +19,9 @@ class ApplicationConfigReader:
         result = [i.strip() for i in result]
 
         return result
+    '''
+
+
 
     def readPath(self, arr_nr):
 
@@ -29,7 +35,7 @@ class ApplicationConfigReader:
         return result
 
     def readSource(self):
-        return self.readPath(1)
+        return self.readPath(0)
 
     def readDestination(self):
-        return self.readPath(2)
+        return self.readPath(1)

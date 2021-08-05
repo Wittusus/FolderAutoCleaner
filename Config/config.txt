@@ -1,3 +1,2 @@
-extensions: .exe, .jpg, .png, .pdf, .rar, .zip, .txt
-src_folder: C:/Users/Witek/Downloads
-dst_folder: D:/Downloads
+src_folder: C:/Users/Ldvs/Downloads
+dst_folder: C:/Users/Ldvs/Downloads
