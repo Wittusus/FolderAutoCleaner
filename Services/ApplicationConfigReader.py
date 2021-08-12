@@ -3,7 +3,7 @@ class ApplicationConfigReader:
     def __init__(self, configFilePath: str):
         self.configFilePath = configFilePath
 
-    def readPath(self, arr_nr):
+    def readPath(self, option):
 
         try:
             file = [i.split(' ') for i in open(self.configFilePath)]
@@ -11,11 +11,12 @@ class ApplicationConfigReader:
         except:
             return FileNotFoundError
 
-        result = file[arr_nr][1].strip()
-        return result
+
+        result = list(filter(lambda x: x[0] == option + ":", file))[0][1]
+        return result.strip()
 
     def readSource(self):
-        return self.readPath(0)
+        return self.readPath("src_folder")
 
     def readDestination(self):
-        return self.readPath(1)
+        return self.readPath("dst_folder")
